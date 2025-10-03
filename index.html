@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>稻荷社区 Forge模组服</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // 恢复绿色主题
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#22c55e', // 主色绿色
+                        secondary: '#165DFF', // 副色科技蓝
+                        dark: '#1e293b', // 深色背景
+                        light: '#f8fafc', // 浅色文本
+                    }
+                }
+            }
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.15);}
+            .bg-glass { background: rgba(30,41,59,0.7); backdrop-filter: blur(10px);}
+            .bg-grid { background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px;}
+            .border-glow { box-shadow: 0 0 15px #22c55e70; }
+            .btn-glow { box-shadow: 0 0 10px #165DFF99; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-dark text-light font-inter overflow-x-hidden bg-grid">
+    <!-- 顶部导航栏 -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="bg-glass py-4 px-6 md:px-12">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="text-primary text-3xl font-bold">
+                        <i class="fa fa-cube mr-2"></i>DaoHe Town
+                    </div>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-light hover:text-primary transition-colors duration-300 font-medium">首页</a>
+                    <a href="#mc-status-block" class="text-light hover:text-primary transition-colors duration-300 font-medium">服务器状态</a>
+                    <a href="#features" class="text-light hover:text-primary transition-colors duration-300 font-medium">模组特色</a>
+                    <a href="#mods" class="text-light hover:text-primary transition-colors duration-300 font-medium">模组列表</a>
+                    <a href="#join" class="text-light hover:text-primary transition-colors duration-300 font-medium">加入方式</a>
+                    <a href="#sponsors" class="text-light hover:text-primary transition-colors duration-300 font-medium">赞助名单</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="https://qm.qq.com/q/BFwxgYFPqM" target="_blank" class="bg-secondary hover:bg-secondary/80 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 btn-glow">
+                        <i class="fa fa-qq mr-2"></i>QQ群
+                    </a>
+                    <button id="mobile-menu-button" class="md:hidden text-light text-xl">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden bg-glass py-4 px-6 md:hidden">
+            <div class="flex flex-col space-y-4">
+                <a href="#home" class="text-light hover:text-primary transition-colors duration-300 font-medium py-2">首页</a>
+                <a href="#mc-status-block" class="text-light hover:text-primary transition-colors duration-300 font-medium py-2">服务器状态</a>
+                <a href="#features" class="text-light hover:text-primary transition-colors duration-300 font-medium py-2">模组特色</a>
+                <a href="#mods" class="text-light hover:text-primary transition-colors duration-300 font-medium py-2">模组列表</a>
+                <a href="#join" class="text-light hover:text-primary transition-colors duration-300 font-medium py-2">加入方式</a>
+                <a href="#sponsors" class="text-light hover:text-primary transition-colors duration-300 font-medium py-2">赞助名单</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主横幅区域 -->
+    <section id="home" class="min-h-screen flex items-center relative overflow-hidden">
+        <!-- 背景装饰 -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-dark/80 to-dark"></div>
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-full bg-[url('./bg1.png')] bg-cover bg-center opacity-20"></div>
+            </div>
+            <div class="absolute top-20 right-20 w-64 h-64 bg-primary/20 rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-20 left-20 w-80 h-80 bg-secondary/20 rounded-full filter blur-3xl"></div>
+        </div>
+        <div class="container mx-auto px-6 md:px-12 pt-20 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-[clamp(2.5rem,6vw,4rem)] font-bold leading-tight text-shadow mb-6">
+                        <span class="text-primary">稻荷社区</span><br>
+                        Minecraft Server
+                    </h1>
+                    <p class="text-xl md:text-2xl text-light mb-8 max-w-lg">
+                        你也想在MC里打造一片属于自己的小镇吗？
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                        <a href="#join" class="bg-primary hover:bg-primary/80 text-white px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 font-semibold text-lg flex items-center justify-center border-glow">
+                            <i class="fa fa-gamepad mr-2"></i> 立即加入
+                        </a>
+                        <a href="https://qm.qq.com/q/BFwxgYFPqM" target="_blank" class="bg-secondary hover:bg-secondary/80 text-white px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 font-semibold text-lg flex items-center justify-center btn-glow">
+                            <i class="fa fa-qq mr-2"></i> QQ群
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <div class="flex flex-col">
+                            <span class="text-primary text-2xl font-bold">Forge模组</span>
+                            <span class="text-light/60">服务器类型</span>
+                        </div>
+                        <div class="w-px h-12 bg-light/20"></div>
+                        <div class="flex flex-col">
+                            <span class="text-primary text-2xl font-bold">1.20.1</span>
+                            <span class="text-light/60">游戏版本</span>
+                        </div>
+                        <div class="w-px h-12 bg-light/20"></div>
+                        <div class="flex flex-col">
+                            <span class="text-primary text-2xl font-bold">白名单</span>
+                            <span class="text-light/60">进群申请</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute inset-0 bg-primary/30 rounded-xl blur-xl animate-pulse-slow"></div>
+                        <div class="relative bg-dark/80 rounded-xl p-8 border border-primary/30 shadow-xl animate-float">
+                            <div class="text-center mb-6">
+                                <h3 class="text-xl font-semibold text-primary mb-2">服务器信息</h3>
+                                <p class="text-light/60">由 _YuWan 创建于 2023年7月</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-dark/60 p-4 rounded-lg border border-primary/20">
+                                    <div class="text-light/60 text-sm mb-1">运营模式</div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-primary">公益 | 支持赞助</span>
+                                    </div>
+                                </div>
+                                <div class="bg-dark/60 p-4 rounded-lg border border-primary/20">
+                                    <div class="text-light/60 text-sm mb-1">QQ群</div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-primary">1060276437</span>
+                                        <button id="copy-qq" class="text-light/60 hover:text-primary transition-colors">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bg-dark/60 p-4 rounded-lg border border-primary/20">
+                                    <div class="text-light/60 text-sm mb-1">进服须知</div>
+                                    <div class="flex items-center">
+                                        <span class="text-primary">必须群内下载整合包并申请白名单</span>
+                                        <div class="ml-2 flex">
+                                            <span class="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center text-light/80 text-sm">
+                                禁止原版客户端直连，务必使用群文件整合包！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 波浪装饰 -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full h-[60px] md:h-[100px]">
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="fill-primary"></path>
+                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="fill-primary"></path>
+                <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="fill-primary"></path>
+            </svg>
+        </div>
+    </section>
+    <section class="py-24">
+        <!-- 服务器状态监控区块（美化+带图标） -->
+            <div id="mc-status-block" class="mt-8 bg-dark/80 rounded-2xl p-6 border border-primary/30 shadow-xl max-w-xl mx-auto text-light flex flex-col items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <img id="mc-icon" src="" alt="服务器图标" class="w-16 h-16 rounded-lg border border-primary/40 shadow-lg bg-dark/60">
+                    <div>
+                        <div class="text-xl font-bold text-primary mb-1 flex items-center gap-2">
+                            <i class="fa fa-server"></i> 稻荷小镇服务器
+                        </div>
+                        <div class="text-sm text-light/70 font-mono">
+                            <span id="mc-status-ip">mc.alini.cn</span>:<span id="mc-status-port">11666</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="mc-status-loading" class="text-light/60 flex items-center gap-2 pt-2 pb-2">
+                    <i class="fa fa-spinner fa-spin"></i> 正在获取服务器状态...
+                </div>
+                <div id="mc-status-content" style="display:none;" class="w-full pt-4">
+                    <div class="mb-2 flex items-center gap-2">
+                        <span class="font-semibold w-24">版本：</span><span id="mc-status-version"></span>
+                    </div>
+                    <div class="mb-2 flex items-center gap-2">
+                        <span class="font-semibold w-24">MOTD：</span>
+                        <span id="mc-status-motd" class="whitespace-pre-line"></span>
+                    </div>
+                    <div class="mb-2 flex items-center gap-2">
+                        <span class="font-semibold w-24">在线人数：</span>
+                        <span id="mc-status-online"></span> / <span id="mc-status-max"></span>
+                    </div>
+                    <div class="mb-2 flex items-center gap-2">
+                        <span class="font-semibold w-24">延迟：</span><span id="mc-status-delay"></span> ms
+                    </div>
+                    <div class="mb-2 flex items-center gap-2">
+                        <span class="font-semibold w-24">玩家：</span>
+                        <span id="mc-status-players"></span>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- 服务器模组特色 -->
+    <section id="features" class="py-24 bg-primary/5">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                    
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4 text-light">
+                    Forge模组服<span class="text-primary">特色</span>
+                </h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">
+                    丰富多样的模组整合，专属玩法，安全白名单，活跃社区等你加入！
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/30 transition-colors">
+                        <i class="fa fa-cubes text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-light">丰富模组玩法</h3>
+                    <p class="text-light/60">建筑、探索、生存、装饰等多类别模组，体验多元乐趣。</p>
+                </div>
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/30 transition-colors">
+                        <i class="fa fa-wrench text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-light">专属整合包</h3>
+                    <p class="text-light/60">一键下载免配置，自动适配所有模组。</p>
+                </div>
+                <!-- 白名单认证 -->
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 hover:border-primary/50 ...">
+                    <div class="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center mb-6 ...">
+                        <i class="fa fa-lock text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-light">白名单认证</h3>
+                    <p class="text-light/60">进群申请，管理员审核开放进服权限。</p>
+                </div>
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/30 transition-colors">
+                        <i class="fa fa-shield text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-light">安全保障</h3>
+                    <p class="text-light/60">完善反作弊系统，硬件稳定，保障环境安全。</p>
+                </div>
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 group">
+                    <div class="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/30 transition-colors">
+                        <i class="fa fa-users text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-light">活跃社区</h3>
+                    <p class="text-light/60">群聊热烈，问题随时解答，新手友好。</p>
+                </div>
+                <!-- 持续更新 -->
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 hover:border-primary/50 ...">
+                    <div class="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center mb-6 ...">
+                        <i class="fa fa-refresh text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-light">持续更新</h3>
+                    <p class="text-light/60">定期优化模组包与服务器，加入新内容。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模组列表区 -->
+    <section id="mods" class="py-20 bg-dark/80">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-10">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4 text-light">主要模组列表</h2>
+                <p class="text-light/70 max-w-xl mx-auto text-lg">本服整合包包含多种热门与实用模组，持续优化更新！</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-primary/20 px-3 py-1 rounded text-primary font-bold text-sm mr-2">建筑</span>
+                        <span class="text-light font-semibold">BuildMode</span>
+                    </div>
+                    <p class="text-light/60 text-sm">腐竹研发的建造模式，在生存模式下也能轻松获得建材。</p>
+                </div>
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-primary/20 px-3 py-1 rounded text-primary font-bold text-sm mr-2">安全</span>
+                        <span class="text-light font-semibold">SimpleLocks</span>
+                    </div>
+                    <p class="text-light/60 text-sm">腐竹研发的箱子锁，保护你的物品安全。</p>
+                </div>
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-secondary/20 px-3 py-1 rounded text-secondary font-bold text-sm mr-2">探索</span>
+                        <span class="text-light font-semibold">Alex's Mobs</span>
+                    </div>
+                    <p class="text-light/60 text-sm">增加众多新生物与生态系统。</p>
+                </div>
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-primary/20 px-3 py-1 rounded text-primary font-bold text-sm mr-2">装饰</span>
+                        <span class="text-light font-semibold">Macaw's Furniture</span>
+                    </div>
+                    <p class="text-light/60 text-sm">丰富家具装饰，打造理想家园。</p>
+                </div>
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-secondary/20 px-3 py-1 rounded text-secondary font-bold text-sm mr-2">便利</span>
+                        <span class="text-light font-semibold">EMI+NEI</span>
+                    </div>
+                    <p class="text-light/60 text-sm">浏览所有合成表，查找物品信息。</p>
+                </div>
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-primary/20 px-3 py-1 rounded text-primary font-bold text-sm mr-2">生存</span>
+                        <span class="text-light font-semibold">Farmer's Delight</span>
+                    </div>
+                    <p class="text-light/60 text-sm">农作物、料理、农业体验升级。</p>
+                </div>
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-secondary/20 px-3 py-1 rounded text-secondary font-bold text-sm mr-2">探索</span>
+                        <span class="text-light font-semibold">L_Ender 's Cataclysm</span>
+                    </div>
+                    <p class="text-light/60 text-sm">新世界、Boss、探险。</p>
+                </div>
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-primary/20 px-3 py-1 rounded text-primary font-bold text-sm mr-2">安全</span>
+                        <span class="text-light font-semibold">CraftAudit</span>
+                    </div>
+                    <p class="text-light/60 text-sm">腐竹研发的审计工具，记录玩家的操作行为，保证服务器安全。</p>
+                </div>
+                <div class="bg-dark rounded-lg p-6 border border-primary/20 shadow hover:shadow-lg transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-secondary/20 px-3 py-1 rounded text-secondary font-bold text-sm mr-2">装饰</span>
+                        <span class="text-light font-semibold">Yuushya系列</span>
+                    </div>
+                    <p class="text-light/60 text-sm">方块小镇+路地裹，极致细节建筑。</p>
+                </div>
+                <!-- 更多模组请进群咨询或查看群文件~ -->
+            </div>
+            <div class="mt-10 text-center">
+                <a href="https://qm.qq.com/q/BFwxgYFPqM" target="_blank" class="bg-primary hover:bg-primary/80 text-white px-6 py-3 rounded-lg font-bold btn-glow">
+                    <i class="fa fa-qq mr-2"></i> 查看完整模组列表
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 加入方式区 -->
+    <section id="join" class="py-24 bg-dark/80">
+        <div class="absolute inset-0 bg-[url('https://picsum.photos/id/160/1920/1080')] bg-cover bg-center opacity-10"></div>
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4 text-light">
+                    如何<span class="text-primary">加入</span>Forge模组服务器
+                </h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">
+                    本服采用Forge模组整合，需专用客户端和白名单，按以下流程操作！
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 步骤1 -->
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 transition-transform duration-500 group-hover:scale-150"></div>
+                    <div class="relative">
+                        <div class="text-primary text-4xl font-bold mb-6">01</div>
+                        <h3 class="text-xl font-semibold mb-3 text-light">加入QQ群/社群</h3>
+                        <p class="text-light/60 mb-4">
+                            进QQ群 <span class="text-primary font-bold">1060276437</span>（或点下方按钮），获取专用客户端和申请白名单入口。
+                        </p>
+                        <a href="https://qm.qq.com/q/BFwxgYFPqM" target="_blank" class="bg-secondary hover:bg-secondary/80 text-white px-6 py-3 rounded-lg btn-glow">
+                            <i class="fa fa-qq mr-2"></i> 加入QQ群
+                        </a>
+                    </div>
+                </div>
+                <!-- 步骤2 -->
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 transition-transform duration-500 group-hover:scale-150"></div>
+                    <div class="relative">
+                        <div class="text-primary text-4xl font-bold mb-6">02</div>
+                        <h3 class="text-xl font-semibold mb-3 text-light">下载整合包客户端</h3>
+                        <p class="text-light/60 mb-4">
+                            群文件处下载【稻荷小镇客户端】，按照教程安装。
+                        </p>
+                        <a href="http://fn.alini.cn:5244/" target="_blank" class="bg-primary hover:bg-primary/80 text-white px-6 py-3 rounded-lg btn-glow">
+                            <i class="fa fa-download mr-2"></i> 下载整合包
+                        </a>
+                    </div>
+                </div>
+                <!-- 步骤3 -->
+                <div class="bg-dark/80 rounded-xl p-8 border border-primary/20 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 transition-transform duration-500 group-hover:scale-150"></div>
+                    <div class="relative">
+                        <div class="text-primary text-4xl font-bold mb-6">03</div>
+                        <h3 class="text-xl font-semibold mb-3 text-light">申请白名单</h3>
+                        <p class="text-light/60 mb-4">
+                            按群公告内要求绑定你的游戏ID，管理员审核后即可进服。
+                        </p>
+                        <div class="bg-dark/60 p-4 rounded-lg mt-2">
+                            <span class="text-primary font-mono">服务器IP：mc.alini.cn:11666<br>（仅限白名单玩家用整合包登陆）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 text-center">
+                <div class="text-light/70 text-lg">
+                    <i class="fa fa-exclamation-circle text-primary mr-2"></i>
+                    <b>注意：</b>本服为Forge模组服，禁止原版客户端直接进入！
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 优化后的赞助名单区 -->
+    <section id="sponsors" class="py-24 bg-dark/80">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(2rem,4vw,3rem)] font-bold mb-4 text-light">
+                    感谢<span class="text-primary">赞助者</span>的支持
+                </h2>
+                <p class="text-light/70 max-w-2xl mx-auto text-lg">
+                    你的每一份支持，都是社区发展的动力！赞助者可享有专属称号、建筑权杖等福利。
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-dark rounded-xl p-6 border border-primary/20 hover:border-primary/40 transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary text-3xl mb-4">
+                        <i class="fa fa-diamond"></i>
+                    </div>
+                    <h4 class="text-light font-semibold mb-2">匿名 <span class="text-primary ml-2 text-sm">[超级赞助]</span></h4>
+                    <span class="text-primary text-sm font-medium mb-2">捐赠: 1000元</span>
+                    <p class="text-light/70 text-sm text-center">强大的反作弊系统，做到人人平等！</p>
+                </div>
+                <div class="bg-dark rounded-xl p-6 border border-primary/20 hover:border-primary/40 transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary text-3xl mb-4">
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <h4 class="text-light font-semibold mb-2">匿名 <span class="text-primary ml-2 text-sm">[赞助者]</span></h4>
+                    <span class="text-primary text-sm font-medium mb-2">捐赠: 500元</span>
+                    <p class="text-light/70 text-sm text-center">冒险元素也太好玩了吧~</p>
+                </div>
+                <div class="bg-dark rounded-xl p-6 border border-primary/20 hover:border-primary/40 transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary text-3xl mb-4">
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <h4 class="text-light font-semibold mb-2">匿名 <span class="text-primary ml-2 text-sm">[赞助者]</span></h4>
+                    <span class="text-primary text-sm font-medium mb-2">捐赠: 500元</span>
+                    <p class="text-light/70 text-sm text-center">简直是我理想中的幻想乡！</p>
+                </div>
+                <!-- 可继续添加更多赞助者 -->
+            </div>
+            <div class="mt-16 text-center">
+                <a href="https://afdian.com/a/zaizaiu" target="_blank" class="inline-block bg-secondary hover:bg-secondary/80 text-white px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 font-semibold text-lg btn-glow">
+                    <i class="fa fa-heart mr-2"></i> 我要赞助
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark/90 border-t border-primary/10 py-12">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <div class="text-primary text-2xl font-bold mb-4">
+                        <i class="fa fa-cube mr-2"></i>稻荷社区
+                    </div>
+                    <p class="text-light/60 mb-6 max-w-md">
+                        稻荷社区 你的虚拟幻想乡，欢迎加入QQ群获取整合包和资格！
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://qm.qq.com/q/BFwxgYFPqM" target="_blank" class="text-light/60 hover:text-primary transition-colors">
+                            <i class="fa fa-qq text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-light font-semibold mb-4">快速链接</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-light/60 hover:text-primary transition-colors">首页</a></li>
+                        <li><a href="#features" class="text-light/60 hover:text-primary transition-colors">模组特色</a></li>
+                        <li><a href="#mods" class="text-light/60 hover:text-primary transition-colors">模组列表</a></li>
+                        <li><a href="#join" class="text-light/60 hover:text-primary transition-colors">加入方式</a></li>
+                        <li><a href="#sponsors" class="text-light/60 hover:text-primary transition-colors">赞助名单</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-light font-semibold mb-4">联系我们</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fa fa-server text-primary mr-2"></i>
+                            <span class="text-light/60">稻荷社区服务器</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-qq text-primary mr-2"></i>
+                            <span class="text-light/60">2806752155</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope text-primary mr-2"></i>
+                            <span class="text-light/60">yuwan@alini.cn</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-user text-primary mr-2"></i>
+                            <span class="text-light/60">创始人: _YuWan、MaSanSui</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-primary/10 mt-12 pt-8 text-center">
+                <p class="text-light/40 text-sm">
+                    © 2025 稻荷社区 Minecraft Server. 保留所有权利。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 复制成功提示 -->
+    <div id="copy-toast" class="fixed bottom-8 right-8 bg-primary text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <i class="fa fa-check-circle mr-2"></i> 复制成功！
+    </div>
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2');
+            }
+        });
+
+        // 移动端菜单
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    // 关闭移动菜单
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // 复制QQ功能
+        function showToast() {
+            const toast = document.getElementById('copy-toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
+        document.getElementById('copy-qq').addEventListener('click', () => {
+            navigator.clipboard.writeText('1060276437').then(() => {
+                showToast();
+            });
+        });
+    </script>
+    <script>
+        async function fetchMCStatus() {
+            const ip = 'mc.alini.cn';
+            const port = '11666';
+            const stype = 'je';
+            const url = `https://motd.minebbs.com/api/status?ip=${ip}&port=${port}&stype=${stype}`;
+            const loading = document.getElementById('mc-status-loading');
+            const content = document.getElementById('mc-status-content');
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                document.getElementById('mc-status-ip').textContent = ip;
+                document.getElementById('mc-status-port').textContent = port;
+                // 关键：服务器图标
+                if (data.icon) {
+                    document.getElementById('mc-icon').src = data.icon;
+                } else {
+                    document.getElementById('mc-icon').src = "https://mcskinavatar.com/avatar/Steve/64.png";
+                }
+                if (data.status === "online") {
+                    document.getElementById('mc-status-version').textContent = data.version ?? '未知';
+                    document.getElementById('mc-status-motd').textContent = data.pureMotd ?? '';
+                    document.getElementById('mc-status-online').textContent = data.players?.online ?? '0';
+                    document.getElementById('mc-status-max').textContent = data.players?.max ?? '未知';
+                    document.getElementById('mc-status-delay').textContent = data.delay ?? '未知';
+                    // 玩家列表
+                    let playerList = '';
+                    if (data.players?.sample) {
+                        playerList = data.players.sample;
+                    } else if (Array.isArray(data.players?.list) && data.players.list.length > 0) {
+                        playerList = data.players.list.join(', ');
+                    } else {
+                        playerList = '暂无玩家在线';
+                    }
+                    document.getElementById('mc-status-players').textContent = playerList;
+                    loading.style.display = 'none';
+                    content.style.display = '';
+                } else {
+                    loading.innerHTML = '<span class="text-red-400"><i class="fa fa-times-circle"></i> 服务器当前离线</span>';
+                    content.style.display = 'none';
+                }
+            } catch (e) {
+                loading.innerHTML = '<span class="text-red-400"><i class="fa fa-times-circle"></i> 获取状态失败</span>';
+                content.style.display = 'none';
+            }
+        }
+        document.addEventListener("DOMContentLoaded", fetchMCStatus);
+    </script>
+</body>
+</html>
